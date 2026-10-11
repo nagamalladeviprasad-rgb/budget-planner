@@ -1,0 +1,9 @@
+{
+  "scripts": {
+    "build": "npm --prefix frontend-react run build",
+    "deploy": "npm run build && gh-pages -d frontend-react/dist"
+  },
+  "devDependencies": {
+    "gh-pages": "^6.3.0"
+  }
+}
