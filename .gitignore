@@ -1,0 +1,16 @@
+node_modules/
+**/node_modules/
+
+.env
+.env.*
+**/.env
+**/.env.*
+backend/.env
+
+dist/
+**/dist/
+
+*.log
+.vscode/
+.idea/
+.DS_Store

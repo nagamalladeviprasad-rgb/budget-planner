@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Budget Planner</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f6f8;
+            margin: 0;
+            padding: 20px;
+        }
+
+        h1 {
+            text-align: center;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: auto;
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        input, select, button {
+            width: 100%;
+            padding: 10px;
+            margin: 8px 0;
+            box-sizing: border-box;
+        }
+
+        button {
+            background: #007bff;
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+
+        button:hover {
+            background: #0056b3;
+        }
+
+        .transaction {
+            background: #f1f1f1;
+            margin-top: 10px;
+            padding: 10px;
+            border-radius: 5px;
+        }
+
+        /* Overspending Alert */
+        #overspendingAlert {
+            margin-bottom: 20px;
+        }
+
+        .alert {
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+            font-weight: bold;
+        }
+
+        .warning {
+            background: #fff3cd;
+            color: #856404;
+            border: 1px solid #ffeeba;
+        }
+
+        .safe {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        /* Dashboard */
+        .dashboard {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+
+        .card {
+            flex: 1;
+            background: #f1f5f9;
+            padding: 15px;
+            text-align: center;
+            border-radius: 8px;
+        }
+
+        .card h3 {
+            margin: 5px 0;
+            font-size: 18px;
+        }
+
+        .card p {
+            font-size: 24px;
+            font-weight: bold;
+            margin: 10px 0;
+        }
+
+        /* Chart */
+        .chart-container {
+            margin-top: 30px;
+            text-align: center;
+        }
+
+        #expenseChart {
+            max-width: 400px;
+            max-height: 400px;
+            margin: auto;
+        }
+
+        /* Monthly Summary */
+        .summary {
+            background: #e8f4ff;
+            margin-top: 15px;
+            padding: 15px;
+            border-radius: 8px;
+            border: 1px solid #b8daff;
+        }
+
+        .summary p {
+            font-size: 18px;
+            margin: 12px 0;
+        }
+
+        /* Savings Goals */
+        .goal {
+            background: #f1f5f9;
+            margin-top: 15px;
+            padding: 15px;
+            border-radius: 8px;
+        }
+
+        .goal h3 {
+            margin-top: 0;
+        }
+
+        .progress-container {
+            background: #ddd;
+            height: 20px;
+            border-radius: 10px;
+            overflow: hidden;
+            margin: 10px 0;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background: #28a745;
+            width: 0%;
+        }
+
+        .goal button {
+            background: #dc3545;
+        }
+
+        .goal button:hover {
+            background: #b02a37;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h1>💰 Budget Planner</h1>
+
+    <div class="container">
+
+        <!-- Overspending Alert -->
+        <div id="overspendingAlert"></div>
+
+
+        <!-- Dashboard -->
+        <div class="dashboard">
+
+            <div class="card">
+                <h3>💰 Total Income</h3>
+                <p id="totalIncome">₹0</p>
+            </div>
+
+            <div class="card">
+                <h3>💸 Total Expenses</h3>
+                <p id="totalExpenses">₹0</p>
+            </div>
+
+            <div class="card">
+                <h3>💵 Balance</h3>
+                <p id="balance">₹0</p>
+            </div>
+
+        </div>
+
+
+        <!-- Add Transaction -->
+        <h2>Add Transaction</h2>
+
+        <form id="transactionForm">
+
+            <input
+                type="text"
+                id="description"
+                placeholder="Description"
+                required
+            >
+
+            <input
+                type="number"
+                id="amount"
+                placeholder="Amount"
+                required
+            >
+
+            <select id="type" required>
+
+                <option value="">
+                    Select Type
+                </option>
+
+                <option value="income">
+                    Income
+                </option>
+
+                <option value="expense">
+                    Expense
+                </option>
+
+            </select>
+
+            <input
+                type="text"
+                id="category"
+                placeholder="Category"
+                required
+            >
+
+            <button type="submit">
+                Add Transaction
+            </button>
+
+        </form>
+
+
+        <!-- Pie Chart -->
+        <div class="chart-container">
+
+            <h2>📊 Spending Overview</h2>
+
+            <canvas id="expenseChart"></canvas>
+
+        </div>
+
+
+        <!-- Monthly Summary -->
+        <h2>📅 Monthly Summary</h2>
+
+        <div class="summary">
+
+            <p>
+                💰 Monthly Income:
+                <strong id="monthlyIncome">₹0</strong>
+            </p>
+
+            <p>
+                💸 Monthly Expenses:
+                <strong id="monthlyExpenses">₹0</strong>
+            </p>
+
+            <p>
+                💵 Monthly Balance:
+                <strong id="monthlyBalance">₹0</strong>
+            </p>
+
+        </div>
+
+
+        <!-- Savings Goals -->
+        <h2>🎯 Savings Goals</h2>
+
+        <form id="savingsGoalForm">
+
+            <input
+                type="text"
+                id="goalName"
+                placeholder="Goal Name (Example: New Laptop)"
+                required
+            >
+
+            <input
+                type="number"
+                id="targetAmount"
+                placeholder="Target Amount"
+                min="1"
+                required
+            >
+
+            <input
+                type="number"
+                id="savedAmount"
+                placeholder="Already Saved Amount"
+                value="0"
+                min="0"
+                required
+            >
+
+            <button type="submit">
+                Add Savings Goal
+            </button>
+
+        </form>
+
+        <div id="savingsGoalList"></div>
+
+
+        <!-- Transactions -->
+        <h2>Transactions</h2>
+
+        <div id="transactionList"></div>
+
+    </div>
+
+
+    <!-- Chart.js Library -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <!-- Our JavaScript -->
+    <script src="script.js"></script>
+
+</body>
+
+</html>
