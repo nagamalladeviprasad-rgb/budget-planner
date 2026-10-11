@@ -1,6 +1,5 @@
 import { useEffect, useState, useCallback } from "react";
-
-const API_URL = "http://localhost:5000/api/savings-goals";
+import { API_URLS } from "./api";
 
 function SavingsGoals() {
   const [goals, setGoals] = useState([]);
@@ -37,7 +36,7 @@ function SavingsGoals() {
     }
 
     try {
-      const response = await fetch(API_URL, {
+      const response = await fetch(API_URLS.savingsGoals, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -60,7 +59,7 @@ function SavingsGoals() {
   }, []);
 
   useEffect(() => {
-    loadGoals();
+    void Promise.resolve().then(loadGoals);
   }, [loadGoals]);
 
   // Add a savings goal
@@ -96,7 +95,7 @@ function SavingsGoals() {
     setLoading(true);
 
     try {
-      const response = await fetch(API_URL, {
+      const response = await fetch(API_URLS.savingsGoals, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -145,7 +144,7 @@ function SavingsGoals() {
     }
 
     try {
-      const response = await fetch(`${API_URL}/${id}`, {
+      const response = await fetch(`${API_URLS.savingsGoals}/${id}`, {
         method: "DELETE",
         headers: {
           Authorization: `Bearer ${token}`,

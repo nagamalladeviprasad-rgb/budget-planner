@@ -19,6 +19,10 @@ app.get("/", (req, res) => {
     res.send("Budget Planner Backend is Running");
 });
 
+app.get("/health", (req, res) => {
+    res.json({ status: "ok" });
+});
+
 
 // Transaction routes
 app.use("/api/transactions", transactionRoutes);
@@ -32,22 +36,25 @@ app.use("/api/savings-goals", savingsGoalRoutes);
 app.use("/api/auth", authRoutes);
 
 
-// Connect to MongoDB
-mongoose.connect(process.env.MONGO_URI)
-    .then(() => {
+async function startServer() {
+    if (!process.env.MONGO_URI) {
+        throw new Error("MONGO_URI is required to start the server.");
+    }
 
-        console.log("MongoDB Connected Successfully");
+    if (!process.env.JWT_SECRET) {
+        throw new Error("JWT_SECRET is required to start the server.");
+    }
 
-        app.listen(process.env.PORT, () => {
-            console.log(
-                `Server running on http://localhost:${process.env.PORT}`
-            );
-        });
+    await mongoose.connect(process.env.MONGO_URI);
+    console.log("MongoDB Connected Successfully");
 
-    })
-    .catch((error) => {
-
-        console.log("MongoDB Connection Error:");
-        console.log(error);
-
+    const port = Number(process.env.PORT) || 5000;
+    app.listen(port, "0.0.0.0", () => {
+        console.log(`Server running on port ${port}`);
     });
+}
+
+startServer().catch((error) => {
+    console.error("Server startup failed:", error.message);
+    process.exit(1);
+});

@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+const mongoose = require("mongoose");
 
 const savingsGoalSchema = new mongoose.Schema({
   userId: { 
@@ -24,4 +24,4 @@ const savingsGoalSchema = new mongoose.Schema({
   }
 });
 
-export default mongoose.model("SavingsGoal", savingsGoalSchema);
+module.exports = mongoose.model("SavingsGoal", savingsGoalSchema);

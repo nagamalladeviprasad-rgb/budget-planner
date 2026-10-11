@@ -1,0 +1,29 @@
+services:
+  - type: web
+    name: budget-planner-api
+    runtime: node
+    rootDir: backend
+    plan: free
+    buildCommand: npm ci --omit=dev
+    startCommand: npm start
+    healthCheckPath: /health
+    envVars:
+      - key: NODE_VERSION
+        value: 22.12.0
+      - key: MONGO_URI
+        sync: false
+      - key: JWT_SECRET
+        generateValue: true
+
+  - type: web
+    name: budget-planner-web
+    runtime: static
+    rootDir: frontend-react
+    buildCommand: npm ci && npm run build
+    staticPublishPath: dist
+    envVars:
+      - key: VITE_API_URL
+        fromService:
+          type: web
+          name: budget-planner-api
+          envVarKey: RENDER_EXTERNAL_URL

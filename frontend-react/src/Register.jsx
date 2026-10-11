@@ -1,6 +1,5 @@
 import { useState } from "react";
-
-const API_URL = "http://localhost:5000/api/auth/register";
+import { API_URLS } from "./api";
 
 function Register({ onRegister, onShowLogin }) {
   const [name, setName] = useState("");
@@ -29,7 +28,7 @@ function Register({ onRegister, onShowLogin }) {
     setLoading(true);
 
     try {
-      const response = await fetch(API_URL, {
+      const response = await fetch(API_URLS.register, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

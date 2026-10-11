@@ -12,8 +12,7 @@ import {
   YAxis,
   CartesianGrid,
 } from "recharts";
-
-const API_URL = "http://localhost:5000/api/transactions";
+import { API_URLS } from "./api";
 
 const COLORS = [
   "#2563eb",
@@ -42,7 +41,7 @@ function Reports() {
       }
 
       try {
-        const response = await fetch(API_URL, {
+        const response = await fetch(API_URLS.transactions, {
           headers: {
             Authorization: `Bearer ${token}`,
           },

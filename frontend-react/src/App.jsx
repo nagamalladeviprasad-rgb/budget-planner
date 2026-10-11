@@ -1,11 +1,10 @@
 import { useEffect, useState } from "react";
-import Login from "./Login";
+import Login from "./login";
 import Register from "./Register";
 import SavingsGoals from "./SavingsGoals";
 import Reports from "./Reports";
+import { API_URLS } from "./api";
 import "./App.css";
-
-const API_URL = "http://localhost:5000/api/transactions";
 
 function App() {
   const [user, setUser] = useState(() => {
@@ -48,7 +47,7 @@ function App() {
     if (!token) return;
 
     try {
-      const response = await fetch(API_URL, {
+      const response = await fetch(API_URLS.transactions, {
         headers: {
           "Authorization": `Bearer ${token}`
         }
@@ -69,7 +68,7 @@ function App() {
 
   useEffect(() => {
     if (user) {
-      loadTransactions();
+      void Promise.resolve().then(loadTransactions);
     }
   }, [user]);
 
@@ -97,7 +96,7 @@ function App() {
     setSaving(true);
 
     try {
-      const response = await fetch(API_URL, {
+      const response = await fetch(API_URLS.transactions, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -144,7 +143,7 @@ function App() {
     }
 
     try {
-      const response = await fetch(`${API_URL}/${id}`, {
+      const response = await fetch(`${API_URLS.transactions}/${id}`, {
         method: "DELETE",
         headers: {
           "Authorization": `Bearer ${token}`
