@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { API_URLS } from "./api";
 
@@ -27,7 +28,9 @@ function Login({ onLogin, onShowRegister }) {
       const data = await response.json();
 
       if (!response.ok) {
-        throw new Error(data.message || "Login failed. Check your details.");
+        throw new Error(
+          data.message || "Login failed. Check your details."
+        );
       }
 
       if (!data.token) {
@@ -44,50 +47,141 @@ function Login({ onLogin, onShowRegister }) {
   }
 
   return (
-    <div className="app">
-      <header className="header">
-        <h1>💰 Budget Planner</h1>
-        <p>Sign in to manage your money.</p>
+    <div className="login-page">
+      <div className="login-background-shape shape-one"></div>
+      <div className="login-background-shape shape-two"></div>
+
+      <header className="login-header">
+        <div className="login-brand-icon">₹</div>
+        <div>
+          <h1>Budget Planner</h1>
+          <p>Your money. Your goals. Your future.</p>
+        </div>
       </header>
-      <main className="container">
-        <section className="panel">
-          <h2>Login</h2>
+
+      <main className="login-layout">
+        <section className="login-intro">
+          <span className="login-badge">✦ SMART MONEY MANAGEMENT</span>
+
+          <h2>
+            Take control of your money.
+            <span> Build a better future.</span>
+          </h2>
+
+          <p className="login-description">
+            A simple and smart way to manage your personal finances.
+            Track your spending, plan your savings, and make every
+            rupee count.
+          </p>
+
+          <div className="login-feature-list">
+            <div className="login-feature">
+              <div className="feature-icon purple">↗</div>
+              <div>
+                <h3>Income & Expense Tracking</h3>
+                <p>Know where your money goes.</p>
+              </div>
+            </div>
+
+            <div className="login-feature">
+              <div className="feature-icon green">◎</div>
+              <div>
+                <h3>Savings Goals</h3>
+                <p>Turn your dreams into achievable targets.</p>
+              </div>
+            </div>
+
+            <div className="login-feature">
+              <div className="feature-icon orange">▥</div>
+              <div>
+                <h3>Reports & Insights</h3>
+                <p>Understand monthly spending patterns.</p>
+              </div>
+            </div>
+          </div>
+
+          <div className="login-bottom-note">
+            <span>✓</span> Your personal finances, organized in one place.
+          </div>
+        </section>
+
+        <section className="login-card">
+          <div className="login-card-top-icon">👋</div>
+
+          <h2>Welcome Back!</h2>
+          <p className="login-card-subtitle">
+            Sign in to continue your financial journey.
+          </p>
+
           <form onSubmit={handleSubmit}>
             <label htmlFor="loginEmail">Email Address</label>
-            <input
-              id="loginEmail"
-              type="email"
-              placeholder="Enter your email"
-              value={email}
-              onChange={(event) => setEmail(event.target.value)}
-              required
-            />
+            <div className="login-input-wrap">
+              <span>✉</span>
+              <input
+                id="loginEmail"
+                type="email"
+                placeholder="Enter your email"
+                value={email}
+                onChange={(event) => setEmail(event.target.value)}
+                autoComplete="email"
+                required
+              />
+            </div>
 
             <label htmlFor="loginPassword">Password</label>
-            <input
-              id="loginPassword"
-              type="password"
-              placeholder="Enter your password"
-              value={password}
-              onChange={(event) => setPassword(event.target.value)}
-              required
-            />
+            <div className="login-input-wrap">
+              <span>🔒</span>
+              <input
+                id="loginPassword"
+                type="password"
+                placeholder="Enter your password"
+                value={password}
+                onChange={(event) => setPassword(event.target.value)}
+                autoComplete="current-password"
+                required
+              />
+            </div>
 
-            <button type="submit" disabled={loading}>
-              {loading ? "Signing in..." : "Login"}
+            {error && (
+              <p className="error-message" role="alert">
+                {error}
+              </p>
+            )}
+
+            <button
+              className="login-submit-button"
+              type="submit"
+              disabled={loading}
+            >
+              {loading ? "Signing in..." : "Sign In to Your Account →"}
             </button>
           </form>
 
-          {error && <p className="error-message">{error}</p>}
+          <div className="login-divider">
+            <span>YOUR FINANCIAL JOURNEY STARTS HERE</span>
+          </div>
 
-          <p>
-            Don't have an account?{" "}
-            <button type="button" onClick={onShowRegister}>
-              Register here
-            </button>
+          <p className="login-register-text">
+            New to Budget Planner?
+          </p>
+
+          <button
+            className="login-register-button"
+            type="button"
+            onClick={onShowRegister}
+          >
+            Create Your Account
+          </button>
+
+          <p className="login-card-footer">
+            Spend wisely. Save consistently. Grow confidently.
           </p>
         </section>
       </main>
+
+      <footer className="login-footer">
+        © {new Date().getFullYear()} Budget Planner · Plan smarter, live better.
+      </footer>
     </div>
   );
 }
